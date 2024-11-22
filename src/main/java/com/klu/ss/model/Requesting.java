@@ -2,6 +2,8 @@ package com.klu.ss.model;
 //import com.klu.ss.model.enums.RequestStatus;
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -19,12 +21,14 @@ public class Requesting {
     //public static final String RequestStatus = "PENDING";
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private int rid;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "food_offer_id", nullable = false)
+    @JsonIgnore
     private FoodOffer foodOffer;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "requester_id", nullable = false)
+    @JsonIgnore
     private Profile requester;
     @Enumerated(EnumType.STRING)
     public RequestStatus status;
@@ -40,12 +44,12 @@ public class Requesting {
         CANCELLED
     }
    // public RequestStatus = status;
-    public Long getId() {
-		return id;
+    public int getId() {
+		return rid;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public void setId(int rid) {
+		this.rid = rid;
 	}
 
 	public FoodOffer getFoodOffer() {

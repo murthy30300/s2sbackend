@@ -29,17 +29,18 @@ public class ProfileServiceImp implements ProfileService {
 	private Cloudinary cloudinary;
 	@Autowired
 	private static final long MAX_SIZE = 5 * 1024 * 1024;
-
 	@Transactional
 	public String updateUserDetails(Integer uid, MultipartFile profilePic, MultipartFile bannerPic, String name,
 			LocalDate dateOfBirth, String phone, String address, String badge) {
 
 		// uid = 2;
 		Profile profile = prp.getByUid(uid).orElse(new Profile());
+		System.err.println(profile);
 
 		if (profile.getUser() == null) { // If no associated User
 			User user = urp.findById(uid).orElseThrow(() -> new IllegalArgumentException("User not found"));
 			profile.setUser(user); // Associate profile with the user
+			System.err.println(user);
 		}
 		System.out.println(profile);
 		// profile.setUser(new User(uid));
@@ -84,7 +85,6 @@ public class ProfileServiceImp implements ProfileService {
 		return "User details updated successfully";
 
 	}
-
 	public Profile getProfileByUserId(int userId) {
 		return prp.findByUserId(userId);
 	}

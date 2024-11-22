@@ -1,7 +1,5 @@
 package com.klu.ss.controller;
-
 import java.time.LocalDate;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,19 +10,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-
 import com.klu.ss.model.Profile;
 import com.klu.ss.service.*;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:5173")
-@RequestMapping("/posts")
+@RequestMapping("/profile")
 public class ProfileController {
 	@Autowired
 	private ProfileService ps;
 	@PostMapping("/update")
     public ResponseEntity<?> updateUser(
-            @RequestParam Integer uid,
+            @RequestParam int uid,
             @RequestParam(required = false) MultipartFile profilePic,
             @RequestParam(required = false) MultipartFile bannerPic,
             @RequestParam String name,
@@ -44,7 +41,7 @@ public class ProfileController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred while updating the profile");
         }
     }
-	@GetMapping("/profile/details")
+	@GetMapping("/details")
     public ResponseEntity<Profile> getProfileDetails(@RequestParam String username) {
         Profile profileDetails = ps.getProfileDetailsByUsername(username);
         if (profileDetails != null) {

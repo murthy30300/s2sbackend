@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -17,10 +18,10 @@ public class Profile {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long prid;
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "uid", nullable = false)
-    @JsonIgnore
-    private User user;  
+	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+	@JoinColumn(name = "uid", unique = true, nullable = false)
+	@JsonIgnore
+	private User user; 
     private String name;
     String username;
     private LocalDate dateOfBirth;  
@@ -34,7 +35,13 @@ public class Profile {
     private String badge;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-    public Profile(String username, String profilePicUrl2, String bannerPicUrl2) {
+    public String getUsername() {
+		return username;
+	}
+	public void setUsername(String username) {
+		this.username = username;
+	}
+	public Profile(String username, String profilePicUrl2, String bannerPicUrl2) {
 		this.username= username;
 		profilePicUrl2 = profilePicUrl;
 		bannerPicUrl2 = bannerPicUrl;

@@ -1,6 +1,8 @@
 package com.klu.ss.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,34 +15,51 @@ import com.klu.ss.service.*;
 import com.klu.ss.model.*;
 
 import java.util.*;
+
 @RestController
 @RequestMapping("/requests")
 @CrossOrigin(origins = "http://localhost:5173")
 public class RequestController {
-	 	@Autowired
-	    private RequestService requestService;
-	 	@GetMapping("/user/{requesterId}")
-	 	public List<Requesting> getRequestsByUser(@PathVariable Long requesterId) {
-	 	    return requestService.getRequestsByUser(requesterId);
-	 	}
+	@Autowired
+	private RequestService requestService;
 
-	 	@GetMapping("/offer/{offerId}")
-	 	public List<Requesting> getRequestsForOffer(@PathVariable int offerId) {
-	 	    return requestService.getRequestsForOffer(offerId);
-	 	}
+	@GetMapping("/user/{requesterId}")
+	public List<Requesting> getRequestsByUser(@PathVariable Long requesterId) {
+		return requestService.getRequestsByUser(requesterId);
+	}
 
-	    @PostMapping("/create")
-	    public Requesting createRequest(@RequestParam int offerId, @RequestParam Long requesterId) {
-	        return requestService.createRequest(offerId, requesterId);
-	    }
+	@GetMapping("/offer/{offerId}")
+	public List<Requesting> getRequestsForOffer(@PathVariable int offerId) {
+		return requestService.getRequestsForOffer(offerId);
+	}
 
-	    @PostMapping("/{requestId}/confirm")
-	    public boolean confirmRequest(@PathVariable Long requestId) {
-	        return requestService.confirmRequest(requestId);
-	    }
+	@PostMapping("/create")
+	public ResponseEntity<?> createRequest(@RequestParam(required = true) int offerId, @RequestParam(required = true) int requesterId) {
+		try {
+			Requesting request = requestService.createRequest(offerId, requesterId);
+			return ResponseEntity.ok(request);
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: " + e.getMessage());
+		}
+	}
 
-	    @PostMapping("/{requestId}/complete")
-	    public boolean markAsCompleted(@PathVariable Long requestId) {
-	        return requestService.markAsCompleted(requestId);
-	    }
+	@PostMapping("/{requestId}/confirm")
+	public boolean confirmRequest(@PathVariable Long requestId) {
+		return requestService.confirmRequest(requestId);
+	}
+
+	@PostMapping("/{requestId}/complete")
+	public boolean markAsCompleted(@PathVariable Long requestId) {
+		return requestService.markAsCompleted(requestId);
+	}
+
+	@PostMapping("/{requestId}/cancel")
+	public boolean cancelRequest(@PathVariable Long requestId) {
+		return requestService.cancelRequest(requestId);
+	}
+
+	@PostMapping("/donation/status")
+	public boolean updateDonationStatus(@RequestParam Long requestId, @RequestParam Requesting.RequestStatus status) {
+		return requestService.updateRequestStatus(requestId, status);
+	}
 }
