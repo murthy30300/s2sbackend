@@ -64,7 +64,7 @@ public class User {
     
     @Column(name = "is_active")
     private boolean isActive = true;
-	public int getUid() {
+	public Integer getUid() {
 		return uid;
 	}
 	public void setUid(int uid) {

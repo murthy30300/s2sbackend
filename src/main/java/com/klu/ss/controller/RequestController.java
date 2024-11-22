@@ -19,15 +19,15 @@ import java.util.*;
 public class RequestController {
 	 	@Autowired
 	    private RequestService requestService;
-	    @GetMapping("/offer/{offerId}")
-	    public List<Requesting> getRequestsForOffer(@PathVariable int offerId) {
-	        return requestService.getRequestsForOffer(offerId);
-	    }
+	 	@GetMapping("/user/{requesterId}")
+	 	public List<Requesting> getRequestsByUser(@PathVariable Long requesterId) {
+	 	    return requestService.getRequestsByUser(requesterId);
+	 	}
 
-	    @GetMapping("/user/{requesterId}")
-	    public List<Requesting> getRequestsByUser(@PathVariable Long requesterId) {
-	        return requestService.getRequestsByUser(requesterId);
-	    }
+	 	@GetMapping("/offer/{offerId}")
+	 	public List<Requesting> getRequestsForOffer(@PathVariable int offerId) {
+	 	    return requestService.getRequestsForOffer(offerId);
+	 	}
 
 	    @PostMapping("/create")
 	    public Requesting createRequest(@RequestParam int offerId, @RequestParam Long requesterId) {

@@ -1,14 +1,13 @@
 package com.klu.ss.model;
-
 import java.time.LocalDateTime;
-		
 import java.util.*;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.klu.ss.model.enums.*;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -23,6 +22,7 @@ public class FoodOffer /*extends Post*/{
 	private int foid;
 	private String description;
     private String location;
+    @JsonProperty("quantity") 
     private Integer quantity;
     private LocalDateTime expiryDate;
     @Enumerated(EnumType.STRING)
@@ -34,12 +34,24 @@ public class FoodOffer /*extends Post*/{
     private String dietaryNotes;
     @Enumerated(EnumType.STRING)
 	private DonationStatus status;
-    @ManyToOne
-    @JoinColumn(name = "uid")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "uid", nullable = false)
     @JsonIgnore
     private User user;
     @OneToMany(mappedBy = "foodOffer")
     private List<Requesting> requests;
+    public List<Requesting> getRequests() {
+		return requests;
+	}
+	public void setRequests(List<Requesting> requests) {
+		this.requests = requests;
+	}
+	public DonationStatus getStatus() {
+		return status;
+	}
+	public void setUser(User user) {
+		this.user = user;
+	}
 	public int getFoid() {
 		return foid;
 	}

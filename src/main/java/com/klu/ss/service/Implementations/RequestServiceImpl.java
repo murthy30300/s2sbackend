@@ -23,7 +23,7 @@ public class RequestServiceImpl implements RequestService {
     public List<Requesting> getRequestsForOffer(int offerId) {
         return requestRepository.findByFoodOffer_Foid(offerId);
     }
-    
+
     public List<Requesting> getRequestsByUser(Long requesterId) {
         return requestRepository.findByRequester_Prid(requesterId);
     }
@@ -47,10 +47,8 @@ public class RequestServiceImpl implements RequestService {
     public boolean confirmRequest(Long requestId) {
         Requesting request = requestRepository.findById(requestId)
             .orElseThrow(() -> new RuntimeException("Request not found"));
-
         request.setStatus(Requesting.RequestStatus.CONFIRMED);
         requestRepository.save(request);
-
         return true;
     }
 
@@ -58,11 +56,8 @@ public class RequestServiceImpl implements RequestService {
     public boolean markAsCompleted(Long requestId) {
         Requesting request = requestRepository.findById(requestId)
             .orElseThrow(() -> new RuntimeException("Request not found"));
-
         request.setStatus(Requesting.RequestStatus.COMPLETED);
         requestRepository.save(request);
-
         return true;
     }
-
 }

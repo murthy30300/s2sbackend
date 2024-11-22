@@ -15,7 +15,12 @@ import jakarta.transaction.Transactional;
 public class UserServiceImpl implements UserService {
 	@Autowired
 	private UserRepo urp;
+	@Autowired
 	private ProfileRepo prp;
+
+    public UserServiceImpl(UserRepo urp) {
+        this.urp = urp;
+    }
 	@Override
 	@Transactional
 	public String signup(User u) {
@@ -35,22 +40,26 @@ public class UserServiceImpl implements UserService {
 	public Integer getUserIdByUsername(String username) {
 		User user = urp.findByUsername(username);
 		if (user != null) {
-			return user.getUid(); 
+			return user.getUid();
 		}
-		return null; 
+		return null;
 	}
+
 	public Optional<Profile> getUserProfile(HttpSession session) {
-        String username = (String) session.getAttribute("username");
-        if (username == null) {
-            return null; 
-        }
+		String username = (String) session.getAttribute("username");
+		if (username == null) {
+			return null;
+		}
 
-        User user = urp.findByUsername(username);
-        if (user == null) {
-            return null;
-        }
+		User user = urp.findByUsername(username);
+		if (user == null) {
+			return null;
+		}
 
-        return prp.getByUid(user.getUid());
+		return prp.getByUid(user.getUid());
+	}
+	public User findUserByUsername(String username) {
+        return urp.findUserByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found with username: " + username));
     }
-
 }
