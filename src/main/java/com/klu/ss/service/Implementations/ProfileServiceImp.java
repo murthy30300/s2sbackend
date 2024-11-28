@@ -30,7 +30,7 @@ public class ProfileServiceImp implements ProfileService {
 	@Autowired
 	private static final long MAX_SIZE = 5 * 1024 * 1024;
 	@Transactional
-	public String updateUserDetails(Integer uid, MultipartFile profilePic, MultipartFile bannerPic, String name,
+	public String updateUserDetails(Long uid, MultipartFile profilePic, MultipartFile bannerPic, String name,
 			LocalDate dateOfBirth, String phone, String address, String badge) {
 
 		// uid = 2;
@@ -85,7 +85,7 @@ public class ProfileServiceImp implements ProfileService {
 		return "User details updated successfully";
 
 	}
-	public Profile getProfileByUserId(int userId) {
+	public Profile getProfileByUserId(long userId) {
 		return prp.findByUserId(userId);
 	}
 	  public Profile getProfileDetailsByUsername(String username) {

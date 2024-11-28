@@ -6,8 +6,8 @@ public interface RequestService {
     boolean markAsCompleted(Long requestId);
     boolean confirmRequest(Long requestId);
     boolean cancelRequest(Long requestId);
-    Requesting createRequest(int foodOfferId, int requesterId);
+    Requesting createRequest(long foodOfferId, long requesterId);
     List<Requesting> getRequestsByUser(Long requesterId);
-    List<Requesting> getRequestsForOffer(int offerId);
+    List<Requesting> getRequestsForOffer(long offerId);
     public boolean updateRequestStatus(Long requestId, Requesting.RequestStatus status);
 }

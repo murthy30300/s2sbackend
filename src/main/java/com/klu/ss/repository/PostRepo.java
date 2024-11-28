@@ -18,7 +18,7 @@ public interface PostRepo extends JpaRepository<Post, Long> {
 	@Query("SELECT CASE WHEN COUNT(l) > 0 THEN true ELSE false END FROM Like l WHERE l.post.pid = :postId AND l.profile.prid = :profileId")
 	boolean isLikedByProfile(@Param("postId") Long postId, @Param("profileId") Long profileId);
 	 @Query("SELECT p FROM Post p WHERE p.user.uid = :userId")
-	List<Post> findByUserId(Integer userId);
+	List<Post> findByUserId(Long userId);
 	 
 
 }

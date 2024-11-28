@@ -12,7 +12,7 @@ import jakarta.persistence.Id;
 @Entity
 public class FoodRequest {
 	@Id
-	private int frid;
+	private long frid;
 	private String description;
     private String location;
     private Integer quantity;
@@ -23,10 +23,10 @@ public class FoodRequest {
     private String deliveryInstructions;
     @Enumerated(EnumType.STRING)
     private RequestStatus status = RequestStatus.PENDING;
-	public int getFrid() {
+	public long getFrid() {
 		return frid;
 	}
-	public void setFrid(int frid) {
+	public void setFrid(long frid) {
 		this.frid = frid;
 	}
 	public String getDescription() {

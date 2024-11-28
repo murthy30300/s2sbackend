@@ -12,7 +12,7 @@ import jakarta.persistence.Table;
 public class Like {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int likeId;
+	private long likeId;
 
 	@ManyToOne
 	@JoinColumn(name = "prid")
@@ -22,11 +22,11 @@ public class Like {
 	@JoinColumn(name = "pid")
 	private Post post;
 
-	public int getLikeId() {
+	public long getLikeId() {
 		return likeId;
 	}
 
-	public void setLikeId(int likeId) {
+	public void setLikeId(long likeId) {
 		this.likeId = likeId;
 	}
 

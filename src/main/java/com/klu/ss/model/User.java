@@ -19,7 +19,7 @@ public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "uid")
-	public int uid;
+	public long uid;
 	private String email;
 	private String username;
 	private String password;
@@ -64,10 +64,10 @@ public class User {
     
     @Column(name = "is_active")
     private boolean isActive = true;
-	public Integer getUid() {
+	public Long getUid() {
 		return uid;
 	}
-	public void setUid(int uid) {
+	public void setUid(long uid) {
 		this.uid = uid;
 	}
 	public String getEmail() {

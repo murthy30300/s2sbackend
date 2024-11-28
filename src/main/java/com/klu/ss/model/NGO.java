@@ -9,7 +9,7 @@ import jakarta.persistence.OneToOne;
 public class NGO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int ngoId;
+	private long ngoId;
 	private String name;
 	private String head; // Representative or contact person
 	private int totalOfferings;
@@ -18,10 +18,10 @@ public class NGO {
 	private String badge;
 	@OneToOne
 	private User user;
-	public int getNgoId() {
+	public long getNgoId() {
 		return ngoId;
 	}
-	public void setNgoId(int ngoId) {
+	public void setNgoId(long ngoId) {
 		this.ngoId = ngoId;
 	}
 	public String getName() {

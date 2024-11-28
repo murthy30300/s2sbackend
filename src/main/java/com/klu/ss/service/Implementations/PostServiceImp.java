@@ -33,7 +33,7 @@ public class PostServiceImp implements PostService {
 	private Cloudinary cloudinary;
 
 	@Transactional
-	public Post createPost(String caption, MultipartFile image, Integer uid) {
+	public Post createPost(String caption, MultipartFile image, Long uid) {
 		User u = urp.findById(uid).orElseThrow(() -> new RuntimeException("User not found"));
 		String img = null;
 
@@ -92,7 +92,6 @@ public class PostServiceImp implements PostService {
 		lrp.findByPostAndProfile(post, profile).ifPresent(like -> lrp.delete(like));
 
 	}
-
 	@Override
 	public int getLikeCount(Long pid) {
         return postrep.getLikeCount(pid);
@@ -105,9 +104,11 @@ public class PostServiceImp implements PostService {
 	public List<Post> getAllPostsForHome() {    
 	    return postrep.findAllActivePosts(); 
 	}
-    public List<Post> getPostsByUserId(Integer userId) {
+    public List<Post> getPostsByUserId(Long userId) {
         return postrep.findByUserId(userId);
     }
+
+	
 
 
 

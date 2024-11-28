@@ -22,8 +22,8 @@ public class OfferServeImpl implements FoodOfferService {
     private RequestRepo rrp;
     @Autowired
     private ProfileRepo prp;
-    @Autowired
-    private UserRepo urp;
+//    @Autowired
+//    private UserRepo urp;
 
     @Override
     public FoodOffer saveFoodOffer(FoodOfferDTO foodOfferDTO) {
@@ -31,12 +31,12 @@ public class OfferServeImpl implements FoodOfferService {
     }
 
     @Override
-    public Optional<FoodOffer> getFoodOfferById(int id) {
+    public Optional<FoodOffer> getFoodOfferById(long id) {
         return foodOfferRepository.findById(id);
     }
 
     @Override
-    public List<Requesting> getRequestsForOffer(int offerId) {
+    public List<Requesting> getRequestsForOffer(long offerId) {
         return rrp.findByFoodOffer_Foid(offerId);
     }
 
@@ -78,7 +78,7 @@ public class OfferServeImpl implements FoodOfferService {
     }
 
     @Override
-    public List<FoodOffer> getOffersByUserId(int userId) {
+    public List<FoodOffer> getOffersByUserId(long userId) {
         return foodOfferRepository.findByUser_Uid(userId);
     }
 
@@ -88,7 +88,7 @@ public class OfferServeImpl implements FoodOfferService {
     }
 
     @Override
-    public List<FoodOffer> getDonationsByUser(int userId) {
+    public List<FoodOffer> getDonationsByUser(long userId) {
         return foodOfferRepository.findByUser_Uid(userId);
     }
 }

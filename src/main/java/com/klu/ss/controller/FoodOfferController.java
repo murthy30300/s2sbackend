@@ -48,13 +48,13 @@ public class FoodOfferController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<FoodOffer> getFoodOfferById(@PathVariable int id) {
+    public ResponseEntity<FoodOffer> getFoodOfferById(@PathVariable long id) {
         Optional<FoodOffer> foodOffer = foodOfferService.getFoodOfferById(id);
         return foodOffer.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @GetMapping("/mydonations")
-    public ResponseEntity<List<FoodOffer>> getMyOffers(@RequestParam int userId) {
+    public ResponseEntity<List<FoodOffer>> getMyOffers(@RequestParam long userId) {
         List<FoodOffer> myOffers = foodOfferService.getOffersByUserId(userId);
         return ResponseEntity.ok(myOffers);
     }
@@ -65,7 +65,7 @@ public class FoodOfferController {
     }
 
     @GetMapping("/userdonations")
-    public List<FoodOffer> getDonationsByUser(@RequestParam int userId) {
+    public List<FoodOffer> getDonationsByUser(@RequestParam long userId) {
         return foodOfferService.getDonationsByUser(userId);
     }
 }

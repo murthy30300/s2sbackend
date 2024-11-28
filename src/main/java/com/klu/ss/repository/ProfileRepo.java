@@ -7,7 +7,7 @@ import com.klu.ss.model.Profile;
 import com.klu.ss.model.User;
 public interface ProfileRepo extends JpaRepository<Profile, Long> {
 	@Query("SELECT p FROM Profile p JOIN p.user u WHERE u.uid = :uid")
-	Optional<Profile> getByUid(@Param("uid") int uid);
+	Optional<Profile> getByUid(@Param("uid") long uid);
 	
 	@Query("SELECT p FROM Profile p JOIN p.user u WHERE u.uid = :userId")
    Profile findByUserId(@Param("userId") int userId);

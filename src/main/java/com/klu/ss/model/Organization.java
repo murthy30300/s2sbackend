@@ -14,7 +14,7 @@ import jakarta.persistence.OneToOne;
 public class Organization {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	private long oid;
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id", nullable = false)
 	private User user;
@@ -32,11 +32,11 @@ public class Organization {
 	private Integer totalDonations = 0;
 	private Integer totalReceived = 0;
 	private String badge;
-	public Long getId() {
-		return id;
+	public long getId() {
+		return oid;
 	}
-	public void setId(Long id) {
-		this.id = id;
+	public void setId(long oid) {
+		this.oid = oid;
 	}
 	public User getUser() {
 		return user;

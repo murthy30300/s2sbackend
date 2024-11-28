@@ -6,6 +6,6 @@ public interface UserService {
 	public String signup(User u);
 	public User login(String u,String p);
 //	public String login(String u,String p);
-	public Integer getUserIdByUsername(String username);
+	public Long getUserIdByUsername(String username);
 	public User findUserByUsername(String username);
 }

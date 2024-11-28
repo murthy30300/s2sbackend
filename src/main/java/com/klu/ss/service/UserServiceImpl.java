@@ -37,7 +37,7 @@ public class UserServiceImpl implements UserService {
 		}
 	}
 
-	public Integer getUserIdByUsername(String username) {
+	public Long getUserIdByUsername(String username) {
 		User user = urp.findByUsername(username);
 		if (user != null) {
 			return user.getUid();

@@ -21,7 +21,7 @@ public class ProfileController {
 	private ProfileService ps;
 	@PostMapping("/update")
     public ResponseEntity<?> updateUser(
-            @RequestParam int uid,
+            @RequestParam long uid,
             @RequestParam(required = false) MultipartFile profilePic,
             @RequestParam(required = false) MultipartFile bannerPic,
             @RequestParam String name,

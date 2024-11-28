@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -19,8 +20,7 @@ import com.klu.ss.model.User;
 import com.klu.ss.service.UserService;
 
 
-@CrossOrigin(origins = "http://localhost:5173")
-@Controller
+@CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE, RequestMethod.OPTIONS})@Controller
 public class ViewController {
 	@Autowired
 	UserService usr;
@@ -47,7 +47,7 @@ public class ViewController {
 	 @GetMapping("/getUserIdByUsername")
 	    public ResponseEntity<?> getUserIdByUsername(@RequestParam("username") String username) {
 	        try {
-	            Integer userId = usr.getUserIdByUsername(username);
+	            Long userId = usr.getUserIdByUsername(username);
 	            System.out.println(userId);
 	            if (userId == null) {
 	                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");

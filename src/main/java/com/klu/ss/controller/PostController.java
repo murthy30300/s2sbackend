@@ -28,7 +28,7 @@ public class PostController {
 
 	@PostMapping("/create")
 	public ResponseEntity<?> createPost(@RequestParam("caption") String caption,
-			@RequestParam("image") MultipartFile image, @RequestParam("userId") Integer userId) {
+			@RequestParam("image") MultipartFile image, @RequestParam("userId") long userId) {
 		 try {
 			 
 		        Post post = psp.createPost(caption, image, userId);
@@ -77,7 +77,7 @@ public class PostController {
     }
 
     @GetMapping("/user/{userId}")
-    public ResponseEntity<List<Post>> getPostsByUserId(@PathVariable Integer userId) {
+    public ResponseEntity<List<Post>> getPostsByUserId(@PathVariable Long userId) {
         List<Post> posts = psp.getPostsByUserId(userId);
         return ResponseEntity.ok(posts);
     }

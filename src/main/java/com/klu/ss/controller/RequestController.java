@@ -29,12 +29,12 @@ public class RequestController {
 	}
 
 	@GetMapping("/offer/{offerId}")
-	public List<Requesting> getRequestsForOffer(@PathVariable int offerId) {
+	public List<Requesting> getRequestsForOffer(@PathVariable long offerId) {
 		return requestService.getRequestsForOffer(offerId);
 	}
 
 	@PostMapping("/create")
-	public ResponseEntity<?> createRequest(@RequestParam(required = true) int offerId, @RequestParam(required = true) int requesterId) {
+	public ResponseEntity<?> createRequest(@RequestParam(required = true) long offerId, @RequestParam(required = true) long requesterId) {
 		try {
 			Requesting request = requestService.createRequest(offerId, requesterId);
 			return ResponseEntity.ok(request);
