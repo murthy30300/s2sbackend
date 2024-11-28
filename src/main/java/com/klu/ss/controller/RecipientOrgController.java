@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import org.springframework.web.multipart.MultipartFile;
@@ -29,7 +31,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
-
 @CrossOrigin(origins = "http://localhost:5173")
 @RestController
 @RequestMapping("/api/recipient")
@@ -39,12 +40,15 @@ public class RecipientOrgController {
 	private RecipientOrgService recipientOrgService;
 	@Autowired
 	private OrganizationRepo orp;
+
 	@GetMapping("/donations")
 	public ResponseEntity<List<FoodOffer>> getFilteredDonations(@RequestParam String location,
 			@RequestParam(required = false) FoodType foodType,
-			@RequestParam(required = false) LocalDateTime expiryDate) {
+			@RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime expiryDate) {
+		System.out.println("Filters: location=" + location + ", foodType=" + foodType + ", expiryDate=" + expiryDate);
 
 		List<FoodOffer> foodOffers = recipientOrgService.getFilteredDonations(location, foodType, expiryDate);
+		System.out.println("Result: " + foodOffers);
 		return ResponseEntity.ok(foodOffers);
 	}
 
@@ -73,41 +77,44 @@ public class RecipientOrgController {
 		System.out.println("Organization ID: " + organizationId);
 		System.out.println("Request status: " + status);
 		for (Requesting request : requestHistory) {
-		    System.out.println("Request ID: " + request.getRid());
-		    System.out.println("Request Date:===== " + request.getRequestDate());
-		    System.out.println("Status: " + request.getStatus());
+			System.out.println("Request ID: " + request.getRid());
+			System.out.println("Request Date:===== " + request.getRequestDate());
+			System.out.println("Status: " + request.getStatus());
 
-		    if (request.getFoodOffer() != null) {
-		        System.out.println("Food Offer ID: " + request.getFoodOffer().getFoid());
-		        System.out.println("Food Offer Name: " + request.getFoodOffer().getDescription());
-		    } else {
-		        System.out.println("Food Offer: null");
-		    }
+			if (request.getFoodOffer() != null) {
+				System.out.println("Food Offer ID: " + request.getFoodOffer().getFoid());
+				System.out.println("Food Offer Name: " + request.getFoodOffer().getDescription());
+			} else {
+				System.out.println("Food Offer: null");
+			}
 
-		    if (request.getOrg() != null) {
-		        System.out.println("Organization ID: " + request.getOrg().getId());
-		        System.out.println("Organization Name: " + request.getOrg().getName());
-		    } else {
-		        System.out.println("Organization: null");
-		    }
+			if (request.getOrg() != null) {
+				System.out.println("Organization ID: " + request.getOrg().getId());
+				System.out.println("Organization Name: " + request.getOrg().getName());
+			} else {
+				System.out.println("Organization: null");
+			}
 
-		    if (request.getId() != 0) {
-		        System.out.println("Requester ID: " + request.getId());
-		    } else {
-		        System.out.println("Requester ID: null");
-		    }
+			if (request.getId() != 0) {
+				System.out.println("Requester ID: " + request.getId());
+			} else {
+				System.out.println("Requester ID: null");
+			}
 
-		    System.out.println("-------------------------");
+			System.out.println("-------------------------");
 		}
-		//System.out.println("Fetched history: " + requestHistory.get(status));
+		// System.out.println("Fetched history: " + requestHistory.get(status));
 		return ResponseEntity.ok(requestHistory);
 	}
+
 	@GetMapping("/getorganizer")
-	public ResponseEntity<?> getOrganizer(@RequestParam long uid){
+	public ResponseEntity<?> getOrganizer(@RequestParam long uid) {
 		Organization org = orp.findByUserUid(uid);
+		System.out.println("++++++++");
 		System.out.println(org.getId());
 		return ResponseEntity.ok(org.getId());
 	}
+
 	// Create an urgent need post for specific food resources
 	@PostMapping("/urgent-need")
 	public ResponseEntity<UrgentNeed> createUrgentNeed(@RequestBody UrgentNeed urgentNeed) {
@@ -124,30 +131,35 @@ public class RecipientOrgController {
 
 	// Add a success story with a potential image upload
 	@PostMapping("/success-story")
-	public ResponseEntity<Post> addSuccessStory(@RequestParam long organizationId, @RequestParam String story,
+	public ResponseEntity<?> addSuccessStory(@RequestParam long organizationId, @RequestParam String story,
 			@RequestParam(required = false) MultipartFile image) {
-
-		Post successStory = recipientOrgService.addSuccessStory(organizationId, story, image);
-		return ResponseEntity.ok(successStory);
+		try {
+			Post successStory = recipientOrgService.addSuccessStory(organizationId, story, image);
+			return ResponseEntity.ok(successStory);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body("Error posting success story: " + e.getMessage());
+		}
 	}
 
 	// Create a food request (for receiving donations)
 	@PostMapping("/food-request")
-    public ResponseEntity<?> createFoodRequest(@RequestBody Map<String, Object> requestData) {
-        try {
-            // Extract data from request
-            Map<String, Object> foodOfferMap = (Map<String, Object>) requestData.get("foodOffer");
-            Map<String, Object> requesterMap = (Map<String, Object>) requestData.get("requester");
-            
-            long foodOfferId = ((Number) foodOfferMap.get("foid")).intValue();
-            long userId = ((Number) requesterMap.get("uid")).intValue();
-            
-            Requesting createdRequest = recipientOrgService.createFoodRequest(foodOfferId, userId);
-            return ResponseEntity.ok(createdRequest);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Error creating request: " + e.getMessage());
-        }
-    
+	public ResponseEntity<?> createFoodRequest(@RequestBody Map<String, Object> requestData) {
+		try {
+			// Extract data from request
+			Map<String, Object> foodOfferMap = (Map<String, Object>) requestData.get("foodOffer");
+			Map<String, Object> requesterMap = (Map<String, Object>) requestData.get("requester");
+
+			long foodOfferId = ((Number) foodOfferMap.get("foid")).intValue();
+			long userId = ((Number) requesterMap.get("uid")).intValue();
+
+			Requesting createdRequest = recipientOrgService.createFoodRequest(foodOfferId, userId);
+			return ResponseEntity.ok(createdRequest);
+		} catch (Exception e) {
+			return ResponseEntity.badRequest().body("Error creating request: " + e.getMessage());
+		}
+
 	}
 
 	// Update the status of a food request (e.g., accepted, completed, etc.)
@@ -157,5 +169,23 @@ public class RecipientOrgController {
 
 		Requesting updatedRequest = recipientOrgService.updateRequestStatus(requestId, status);
 		return ResponseEntity.ok(updatedRequest);
+	}
+
+	@PostMapping("/update")
+	public ResponseEntity<?> updateOrganization(@RequestParam long orgId, @RequestParam String name,
+			@RequestParam String description, @RequestParam String contactEmail, @RequestParam String contactPhone,
+			@RequestParam String address) {
+
+		try {
+			String result = recipientOrgService.updateOrganizationDetails(orgId, name, description, contactEmail,
+					contactPhone, address);
+			return ResponseEntity.ok(result);
+		} catch (IllegalArgumentException e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body("An error occurred while updating the organization");
+		}
 	}
 }

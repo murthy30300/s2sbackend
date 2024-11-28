@@ -2,6 +2,7 @@ package com.klu.ss.model;
 import java.time.LocalDateTime;
 import java.util.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.klu.ss.model.enums.*;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -35,10 +36,10 @@ public class FoodOffer /*extends Post*/{
 	private DonationStatus status;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "uid", nullable = false)
-   // @JsonIgnore
+    @JsonIgnore
     private User user;
     @OneToMany(mappedBy = "foodOffer")
-   // @JsonIgnore
+    @JsonIgnore
     private List<Requesting> requests;
     private Double latitude;
 	private Double longitude;

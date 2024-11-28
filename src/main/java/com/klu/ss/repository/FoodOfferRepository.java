@@ -21,9 +21,11 @@ public interface FoodOfferRepository extends JpaRepository<FoodOffer, Long> {
 
 	List<FoodOffer> findAllByStatus(DonationStatus status);
 
-	@Query("SELECT fo FROM FoodOffer fo " + "WHERE (:location IS NULL OR fo.location = :location) "
-			+ "AND (:foodType IS NULL OR fo.foodType = :foodType) "
-			+ "AND (:expiryDate IS NULL OR fo.expiryDate >= :expiryDate)")
+	@Query("SELECT fo FROM FoodOffer fo " +
+		       "WHERE (:location IS NULL OR LOWER(fo.location) = LOWER(:location)) " +
+		       "AND (:foodType IS NULL OR fo.foodType = :foodType) " +
+		       "AND (:expiryDate IS NULL OR fo.expiryDate >= :expiryDate)")
+
 	List<FoodOffer> findByFilters(@Param("location") String location, @Param("foodType") FoodType foodType,
 			@Param("expiryDate") LocalDateTime expiryDate);
 }

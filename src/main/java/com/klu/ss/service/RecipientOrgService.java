@@ -24,4 +24,6 @@ public interface RecipientOrgService {
     public Requesting createFoodRequest(long foodOfferId, long userId);
     public Requesting updateRequestStatus(long requestId, Requesting.RequestStatus status);
 	public List<Requesting> getRequestHistory(long organizationId, Requesting.RequestStatus status);
+	public String updateOrganizationDetails(long orgId, String name, String description, String contactEmail,
+			String contactPhone, String address);
 }

@@ -66,7 +66,6 @@ public class RecipientImpl implements RecipientOrgService {
 	public List<LogisticsProvider> findNearbyLogistics(long donationId, long recipientId) {
 		FoodOffer offer = foodOfferRepo.findById(donationId).orElseThrow();
 		return logisticsRepo.findNearbyProviders(offer.getLatitude(), offer.getLongitude(), 10.0);
-
 	}
 
 	@Override
@@ -113,6 +112,11 @@ public class RecipientImpl implements RecipientOrgService {
 			String imageUrl = uploadImage(image); // image upload
 			post.setImageUrl(imageUrl);
 		}
+		System.err.println(organizationId);
+		System.err.println(story);
+		User user = urp.findById(organizationId).orElseThrow(() -> new RuntimeException("User not found"));
+		System.out.println("User fetched for organizationId: " + user.getUid());
+
 		post.setUser(urp.findById(organizationId).orElseThrow());
 		return postRepo.save(post);
 	}
@@ -167,4 +171,23 @@ public class RecipientImpl implements RecipientOrgService {
 		return requestRepo.save(request);
 	}
 
+	public String updateOrganizationDetails(long orgId, String name, String description, String contactEmail,
+			String contactPhone, String address) {
+
+// Fetch the organization by ID
+		Organization organization = orp.findById(orgId)
+				.orElseThrow(() -> new IllegalArgumentException("Organization not found"));
+
+// Update only the relevant fields
+		organization.setName(name);
+		organization.setDescription(description);
+		organization.setContactEmail(contactEmail);
+		organization.setContactPhone(contactPhone);
+		organization.setAddress(address);
+
+// Save changes
+		orp.save(organization);
+
+		return "Organization details updated successfully";
+	}
 }

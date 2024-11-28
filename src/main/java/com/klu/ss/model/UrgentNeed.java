@@ -9,7 +9,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 @Entity
-@Table(name = "recipient_stats")
 public class UrgentNeed {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,7 +17,6 @@ public class UrgentNeed {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "uid")
 	private User organization;
-
 	private String title;
 	private String description;
 	private Integer quantityNeeded;
@@ -26,6 +24,7 @@ public class UrgentNeed {
 	private String eventType;
 	private Boolean isActive = true;
 	private LocalDateTime createdAt = LocalDateTime.now();
+	
 	public Long getId() {
 		return urid;
 	}
