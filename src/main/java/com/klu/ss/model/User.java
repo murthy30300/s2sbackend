@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 
 import com.klu.ss.model.enums.UserRole;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -25,8 +26,7 @@ public class User {
 	private String password;
 	@Enumerated(EnumType.STRING)
     private UserRole role;
-
-    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Profile profile;
 
     public Profile getProfile() {

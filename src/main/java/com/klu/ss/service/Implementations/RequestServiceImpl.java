@@ -9,6 +9,7 @@ import jakarta.transaction.Transactional;
 import com.klu.ss.model.*;
 import com.klu.ss.repository.*;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class RequestServiceImpl implements RequestService {
@@ -23,11 +24,19 @@ public class RequestServiceImpl implements RequestService {
 
 	@Override
 	public List<Requesting> getRequestsForOffer(long offerId) {
-		System.out.println("Fetching requests for offer: " + offerId);
-		List<Requesting> results = requestRepository.findByFoodOffer_Foid(offerId);
-		System.out.println("Found " + results.size() + " results");
-		return results;
+	    System.out.println("Fetching requests for offer: " + offerId);
+	    List<Requesting> results = requestRepository.findPendingRequestsByFoodOffer_Foid(offerId);
+	    System.out.println("Found " + results.size() + " results (All Statuses)");
+	    results.forEach(r -> System.out.println("Request Status: " + r.getStatus()));
+	    
+	    // Additional filter for debugging
+	    List<Requesting> pendingResults = results.stream()
+	        .filter(r -> "PENDING".equals(r.getStatus().toString()))
+	        .collect(Collectors.toList());
+	    System.out.println("Found " + pendingResults.size() + " pending results");
+	    return pendingResults;
 	}
+
 
 	@Override
 	public List<Requesting> getRequestsByUser(Long requesterId) {

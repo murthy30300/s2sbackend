@@ -5,7 +5,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Map;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,9 +28,10 @@ public class ProfileServiceImp implements ProfileService {
 	private Cloudinary cloudinary;
 	@Autowired
 	private static final long MAX_SIZE = 5 * 1024 * 1024;
+
 	@Transactional
 	public String updateUserDetails(Long uid, MultipartFile profilePic, MultipartFile bannerPic, String name,
-			LocalDate dateOfBirth, String phone, String address, String badge) {
+			LocalDate dateOfBirth, String phone, String address, String badge, String username) {
 
 		// uid = 2;
 		Profile profile = prp.getByUid(uid).orElse(new Profile());
@@ -50,6 +50,7 @@ public class ProfileServiceImp implements ProfileService {
 		profile.setAddress(address);
 		profile.setBadge(badge);
 		profile.setUpdatedAt(LocalDateTime.now());
+		profile.setUsername(username);
 		String profilePicUrl = null;
 		if (profilePic != null && !profilePic.isEmpty()) {
 			if (profilePic.getSize() > MAX_SIZE) {
@@ -85,15 +86,17 @@ public class ProfileServiceImp implements ProfileService {
 		return "User details updated successfully";
 
 	}
+
 	public Profile getProfileByUserId(long userId) {
 		return prp.findByUserId(userId);
 	}
-	  public Profile getProfileDetailsByUsername(String username) {
-	        Profile profile = prp.findByUserUsername(username);
-	        if (profile != null) {
-	            return new Profile(profile.getUser().getUsername(), profile.getProfilePicUrl(), profile.getBannerPicUrl());
-	        }
-	        return null;
+
+	public Profile getProfileDetailsByUsername(String username) {
+	    Profile profile = prp.findByUserUsername(username);
+	    if (profile != null) {
+	        return profile; // Return the full profile object.
 	    }
+	    return null;
+	}
 
 }

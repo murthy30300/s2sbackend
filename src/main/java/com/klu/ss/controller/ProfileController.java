@@ -28,11 +28,21 @@ public class ProfileController {
             @RequestParam LocalDate dateOfBirth,
             @RequestParam String phone,
             @RequestParam String address,
-            @RequestParam String badge) {
-        
+            @RequestParam String badge, @RequestParam String username)
+    		
+	{
+		System.out.println("*******");
+		if (profilePic != null) {
+			
+		    System.out.println("Profile pic received: " + profilePic.getOriginalFilename());
+		}
+		if (bannerPic != null) {
+		    System.out.println("Banner pic received: " + bannerPic.getOriginalFilename());
+		}
+
         try {
         	
-            String result = ps.updateUserDetails(uid, profilePic, bannerPic, name, dateOfBirth, phone, address, badge);
+            String result = ps.updateUserDetails(uid, profilePic, bannerPic, name, dateOfBirth, phone, address, badge,username);
             return ResponseEntity.ok(result);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
@@ -41,7 +51,7 @@ public class ProfileController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred while updating the profile");
         }
     }
-	@GetMapping("/details")
+	@GetMapping("/search")
     public ResponseEntity<Profile> getProfileDetails(@RequestParam String username) {
         Profile profileDetails = ps.getProfileDetailsByUsername(username);
         if (profileDetails != null) {

@@ -12,6 +12,11 @@ import com.klu.ss.model.Requesting;
 public interface RequestRepo extends JpaRepository<Requesting, Long> {
 	@Query("SELECT r FROM Requesting r WHERE r.foodOffer.foid = :offerId")
 	List<Requesting> findByFoodOffer_Foid(@Param("offerId") Long offerId);
+	@Query("SELECT r FROM Requesting r WHERE r.foodOffer.foid = :offerId AND r.status = 'PENDING'")
+	List<Requesting> findPendingRequestsByFoodOffer_Foid(@Param("offerId") Long offerId);
+
+
+	
 
 	@Query("SELECT r FROM Requesting r WHERE r.requester.prid = :requesterId")
 	List<Requesting> findByRequester_Prid(@Param("requesterId") Long requesterId);

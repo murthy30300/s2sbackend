@@ -62,7 +62,6 @@ public class PostController {
         int count = psp.getLikeCount(postId);
         return ResponseEntity.ok(count);
     }
-
     @GetMapping("/{postId}/likes/status")
     public ResponseEntity<Boolean> isLikedByProfile(
             @PathVariable Long postId,
@@ -75,7 +74,6 @@ public class PostController {
         List<Post> posts = psp.getAllPostsForHome();
         return ResponseEntity.ok(posts);
     }
-
     @GetMapping("/user/{userId}")
     public ResponseEntity<List<Post>> getPostsByUserId(@PathVariable Long userId) {
         List<Post> posts = psp.getPostsByUserId(userId);
