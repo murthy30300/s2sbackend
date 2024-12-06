@@ -108,8 +108,4 @@ public class PostServiceImp implements PostService {
         return postrep.findByUserId(userId);
     }
 
-	
-
-
-
 }

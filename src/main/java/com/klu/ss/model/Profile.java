@@ -38,6 +38,13 @@ public class Profile {
     public String getUsername() {
 		return username;
 	}
+    public long getUid(){
+    	return user.uid;
+    	
+    }
+    public void setUid(long uid) {
+    	user.uid =uid;
+    }
 	public void setUsername(String username) {
 		this.username = username;
 	}

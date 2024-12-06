@@ -17,10 +17,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.klu.ss.model.FoodOffer;
-import com.klu.ss.model.LogisticsProvider;
 import com.klu.ss.model.Organization;
 import com.klu.ss.model.Post;
-import com.klu.ss.model.RecipientStatus;
+
 import com.klu.ss.model.Requesting;
 import com.klu.ss.model.UrgentNeed;
 import com.klu.ss.model.enums.FoodType;
@@ -53,20 +52,20 @@ public class RecipientOrgController {
 	}
 
 	// Find nearby logistics providers for a given food offer
-	@GetMapping("/logistics")
-	public ResponseEntity<List<LogisticsProvider>> findNearbyLogistics(@RequestParam long donationId,
-			@RequestParam long recipientId) {
-
-		List<LogisticsProvider> logisticsProviders = recipientOrgService.findNearbyLogistics(donationId, recipientId);
-		return ResponseEntity.ok(logisticsProviders);
-	}
+//	@GetMapping("/logistics")
+//	public ResponseEntity<List<LogisticsProvider>> findNearbyLogistics(@RequestParam long donationId,
+//			@RequestParam long recipientId) {
+//
+//		List<LogisticsProvider> logisticsProviders = recipientOrgService.findNearbyLogistics(donationId, recipientId);
+//		return ResponseEntity.ok(logisticsProviders);
+//	}
 
 	// Get recipient organization statistics (e.g., food received, people served)
-	@GetMapping("/stats")
-	public ResponseEntity<RecipientStatus> getStats(@RequestParam long organizationId) {
-		RecipientStatus stats = recipientOrgService.getStats(organizationId);
-		return ResponseEntity.ok(stats);
-	}
+//	@GetMapping("/stats")
+//	public ResponseEntity<RecipientStatus> getStats(@RequestParam long organizationId) {
+//		RecipientStatus stats = recipientOrgService.getStats(organizationId);
+//		return ResponseEntity.ok(stats);
+//	}
 
 	// Get the request history for a recipient organization
 	@GetMapping("/request-history")
@@ -148,7 +147,9 @@ public class RecipientOrgController {
 	public ResponseEntity<?> createFoodRequest(@RequestBody Map<String, Object> requestData) {
 		try {
 			// Extract data from request
+			@SuppressWarnings("unchecked")
 			Map<String, Object> foodOfferMap = (Map<String, Object>) requestData.get("foodOffer");
+			@SuppressWarnings("unchecked")
 			Map<String, Object> requesterMap = (Map<String, Object>) requestData.get("requester");
 
 			long foodOfferId = ((Number) foodOfferMap.get("foid")).intValue();

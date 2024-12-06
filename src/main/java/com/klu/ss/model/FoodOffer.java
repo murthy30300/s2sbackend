@@ -1,7 +1,6 @@
 package com.klu.ss.model;
 import java.time.LocalDateTime;
 import java.util.*;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.klu.ss.model.enums.*;
 import jakarta.persistence.Entity;
