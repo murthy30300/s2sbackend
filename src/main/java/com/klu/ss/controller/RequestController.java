@@ -27,18 +27,28 @@ public class RequestController {
 
 	@GetMapping("/user/{requesterId}")
 	public List<Requesting> getRequestsByUser(@PathVariable Long requesterId) {
-		return requestService.getRequestsByUser(requesterId);
+	    List<Requesting> requests = requestService.getRequestsByUser(requesterId);
+	    requests.forEach(request -> {
+	        request.getFoodOffer().getDescription(); // Lazy loading fix
+	        if (request.getRequester() != null) {
+	            request.getRequester().getName(); // Ensure Profile is loaded
+	        }
+	    });
+	    return requests;
 	}
 
 	@GetMapping("/offer/{offerId}")
 	public List<Requesting> getRequestsForOffer(@PathVariable long offerId) {
-		System.out.println("---------");
-		return requestService.getRequestsForOffer(offerId)
-			    .stream()
-			    .peek(request -> System.out.println("Request Status: " + request.getStatus()))
-			    .filter(request -> "PENDING".equals(request.getStatus()))
-			    .collect(Collectors.toList());
+	    List<Requesting> requests = requestService.getRequestsForOffer(offerId);
+	    requests.forEach(request -> {
+	        request.getFoodOffer().getDescription(); // Lazy loading fix
+	        if (request.getOrg() != null) {
+	            request.getOrg().getName(); // Ensure Organization is loaded
+	        }
+	    });
+	    return requests;
 	}
+
 
 	@PostMapping("/create")
 	public ResponseEntity<?> createRequest(@RequestParam(required = true) long offerId,

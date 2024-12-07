@@ -23,7 +23,9 @@ import com.klu.ss.model.RecipientStatus;
 import com.klu.ss.model.Requesting;
 import com.klu.ss.model.UrgentNeed;
 import com.klu.ss.model.enums.FoodType;
+import com.klu.ss.model.enums.UserRole;
 import com.klu.ss.repository.OrganizationRepo;
+import com.klu.ss.repository.PostRepo;
 import com.klu.ss.service.RecipientOrgService;
 
 import java.time.LocalDateTime;
@@ -39,6 +41,8 @@ public class RecipientOrgController {
 	private RecipientOrgService recipientOrgService;
 	@Autowired
 	private OrganizationRepo orp;
+	@Autowired
+	private PostRepo prp;
 
 	@GetMapping("/donations")
 	public ResponseEntity<List<FoodOffer>> getFilteredDonations(@RequestParam String location,
@@ -133,6 +137,7 @@ public class RecipientOrgController {
 	public ResponseEntity<?> addSuccessStory(@RequestParam long organizationId, @RequestParam String story,
 			@RequestParam(required = false) MultipartFile image) {
 		try {
+			System.out.println("****"+organizationId);
 			Post successStory = recipientOrgService.addSuccessStory(organizationId, story, image);
 			return ResponseEntity.ok(successStory);
 		} catch (Exception e) {
@@ -141,11 +146,35 @@ public class RecipientOrgController {
 					.body("Error posting success story: " + e.getMessage());
 		}
 	}
+	@GetMapping("/organization-stories")
+    public ResponseEntity<?> getSuccessStoriesByOrganization() {
+        try {
+            // Fetch all posts where the user's role is ORGANIZATION
+            List<Post> posts = prp.findByUserRole(UserRole.ORGANIZATION);
+            
+            // Check if no posts are found
+            if (posts.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NO_CONTENT).body("No success stories found.");
+            }
+
+            // Return the posts if found
+            return ResponseEntity.ok(posts);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error fetching success stories: " + e.getMessage());
+        }
+    }
 
 	// Create a food request (for receiving donations)
 	@PostMapping("/food-request")
 	public ResponseEntity<?> createFoodRequest(@RequestBody Map<String, Object> requestData) {
 		try {
+			for (Map.Entry<String, Object> entry : requestData.entrySet()) {
+				String key = entry.getKey();
+				Object value = entry.getValue();
+				System.out.println("Key: " + key + ", Value: " + value);
+			}
 			// Extract data from request
 			@SuppressWarnings("unchecked")
 			Map<String, Object> foodOfferMap = (Map<String, Object>) requestData.get("foodOffer");
@@ -173,12 +202,12 @@ public class RecipientOrgController {
 	}
 
 	@PostMapping("/update")
-	public ResponseEntity<?> updateOrganization(@RequestParam long orgId, @RequestParam String name,
+	public ResponseEntity<?> updateOrganization(@RequestParam long uid, @RequestParam String name,
 			@RequestParam String description, @RequestParam String contactEmail, @RequestParam String contactPhone,
 			@RequestParam String address) {
 
 		try {
-			String result = recipientOrgService.updateOrganizationDetails(orgId, name, description, contactEmail,
+			String result = recipientOrgService.updateOrganizationDetails(uid, name, description, contactEmail,
 					contactPhone, address);
 			return ResponseEntity.ok(result);
 		} catch (IllegalArgumentException e) {

@@ -104,22 +104,37 @@ public class RecipientImpl implements RecipientOrgService {
 		return plan;
 	}
 
-	@Override
-	public Post addSuccessStory(long organizationId, String story, MultipartFile image) {
-		Post post = new Post();
-		post.setCaption(story);
-		if (image != null) {
-			String imageUrl = uploadImage(image); // image upload
-			post.setImageUrl(imageUrl);
-		}
-		System.err.println(organizationId);
-		System.err.println(story);
-		User user = urp.findById(organizationId).orElseThrow(() -> new RuntimeException("User not found"));
-		System.out.println("User fetched for organizationId: " + user.getUid());
+	public Post addSuccessStory(long userId, String story, MultipartFile image) {
+	    Post post = new Post();
+	    post.setCaption(story);
 
-		post.setUser(urp.findById(organizationId).orElseThrow());
-		return postRepo.save(post);
+	    if (image != null) {
+	        String imageUrl = uploadImage(image); 
+	        post.setImageUrl(imageUrl);
+	    }
+
+	    System.out.println("Fetching organization for user ID: " + userId);
+
+	    // Fetch the Organization by user ID
+	    Organization organization = orp.findByUserUid(userId);
+	      //  .orElseThrow(() -> new RuntimeException("Organization not found for user ID: " + userId));
+
+	    System.out.println("Organization fetched: " + organization.getId());
+
+	    User user = organization.getUser();
+	    if (user == null) {
+	        throw new RuntimeException("User not associated with organization: " + organization.getId());
+	    }
+
+	    System.out.println("UserId fetched for organization: " + user.getUid());
+
+	    // Set the user to the Post
+	    post.setUser(user);
+
+	    return postRepo.save(post);
 	}
+
+
 
 	private static final long MAX_SIZE = 5 * 1024 * 1024; // Maximum size of the image (5MB)
 	@Autowired
@@ -141,28 +156,47 @@ public class RecipientImpl implements RecipientOrgService {
 	}
 
 	@Override
-
 	@Transactional
 	public Requesting createFoodRequest(long foodOfferId, long userId) {
-		// Find the food offer
-		FoodOffer foodOffer = foodOfferRepo.findById(foodOfferId)
-				.orElseThrow(() -> new RuntimeException("Food offer not found"));
+	    try {
+	        System.out.println("*****************");
+	        System.out.println("Food Offer ID: " + foodOfferId);
+	        System.out.println("User ID: " + userId);
 
-		// Find the organization by user ID
-		User user = urp.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+	        FoodOffer foodOffer = foodOfferRepo.findById(foodOfferId)
+	                .orElseThrow(() -> new RuntimeException("Food offer not found"));
 
-		Organization organization = orp.findByUser(user)
-				.orElseThrow(() -> new RuntimeException("Organization not found"));
+	        System.out.println("Food Offer Found: " + foodOffer);
 
-		// Create new request
-		Requesting request = new Requesting();
-		request.setFoodOffer(foodOffer);
-		request.setStatus(Requesting.RequestStatus.PENDING);
-		request.setRequestDate(LocalDateTime.now());
-		request.setOrg(organization);
+	        User user = urp.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
 
-		return requestRepo.save(request);
+	        System.out.println("User Found: " + user);
+
+	        Organization organization = orp.findByUser(user)
+	                .orElseThrow(() -> new RuntimeException("Organization not found"));
+
+	        System.out.println("Organization Found: " + organization);
+
+	        Requesting request = new Requesting();
+	        request.setFoodOffer(foodOffer);
+	        request.setStatus(Requesting.RequestStatus.PENDING);
+	        request.setRequestDate(LocalDateTime.now());
+	        request.setOrg(organization);
+
+	        // Log request before saving
+	        System.out.println("Request Before Saving: " + request);
+
+	        Requesting savedRequest = requestRepo.save(request);
+	        System.out.println("Saved Request: " + savedRequest);
+
+	        return savedRequest;
+
+	    } catch (Exception e) {
+	        System.out.println("Error during food request creation: " + e.getMessage());
+	        throw new RuntimeException("Error creating food request: " + e.getMessage());
+	    }
 	}
+
 
 	public Requesting updateRequestStatus(long requestId, Requesting.RequestStatus status) {
 		Requesting request = requestRepo.findById(requestId)
@@ -171,23 +205,29 @@ public class RecipientImpl implements RecipientOrgService {
 		return requestRepo.save(request);
 	}
 
-	public String updateOrganizationDetails(long orgId, String name, String description, String contactEmail,
+	public String updateOrganizationDetails(long uid, String name, String description, String contactEmail,
 			String contactPhone, String address) {
 
-// Fetch the organization by ID
-		Organization organization = orp.findById(orgId)
-				.orElseThrow(() -> new IllegalArgumentException("Organization not found"));
+	// Find the user by UID (userId from session storage)
+	User user = urp.findById(uid)
+			.orElseThrow(() -> new IllegalArgumentException("User not found"));
 
-// Update only the relevant fields
-		organization.setName(name);
-		organization.setDescription(description);
-		organization.setContactEmail(contactEmail);
-		organization.setContactPhone(contactPhone);
-		organization.setAddress(address);
-
-// Save changes
-		orp.save(organization);
-
-		return "Organization details updated successfully";
+	// Create or update organization for this user
+	Organization organization = orp.findByUserp(user);
+	if (organization == null) {
+		organization = new Organization();
+		organization.setUser(user);
 	}
+
+	// Set organization details
+	organization.setName(name);
+	organization.setDescription(description);
+	organization.setContactEmail(contactEmail);
+	organization.setContactPhone(contactPhone);
+	organization.setAddress(address);
+
+	orp.save(organization);
+
+	return "Organization details updated successfully";
+}
 }

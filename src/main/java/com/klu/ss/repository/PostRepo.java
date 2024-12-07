@@ -7,6 +7,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.klu.ss.model.Post;
+import com.klu.ss.model.enums.UserRole;
 @Repository
 public interface PostRepo extends JpaRepository<Post, Long> {
 	@Query("SELECT p FROM Post p WHERE p.isActive = true ORDER BY p.createdAt DESC")
@@ -19,6 +20,8 @@ public interface PostRepo extends JpaRepository<Post, Long> {
 	boolean isLikedByProfile(@Param("postId") Long postId, @Param("profileId") Long profileId);
 	 @Query("SELECT p FROM Post p WHERE p.user.uid = :userId")
 	List<Post> findByUserId(Long userId);
+	 
+	 List<Post> findByUserRole(UserRole role);
 	 
 
 }
