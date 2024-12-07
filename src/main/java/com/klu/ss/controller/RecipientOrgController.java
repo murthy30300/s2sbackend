@@ -19,7 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.klu.ss.model.FoodOffer;
 import com.klu.ss.model.Organization;
 import com.klu.ss.model.Post;
-
+import com.klu.ss.model.RecipientStatus;
 import com.klu.ss.model.Requesting;
 import com.klu.ss.model.UrgentNeed;
 import com.klu.ss.model.enums.FoodType;
@@ -61,11 +61,11 @@ public class RecipientOrgController {
 //	}
 
 	// Get recipient organization statistics (e.g., food received, people served)
-//	@GetMapping("/stats")
-//	public ResponseEntity<RecipientStatus> getStats(@RequestParam long organizationId) {
-//		RecipientStatus stats = recipientOrgService.getStats(organizationId);
-//		return ResponseEntity.ok(stats);
-//	}
+	@GetMapping("/stats")
+	public ResponseEntity<RecipientStatus> getStats(@RequestParam long organizationId) {
+		RecipientStatus stats = recipientOrgService.getStats(organizationId);
+		return ResponseEntity.ok(stats);
+	}
 
 	// Get the request history for a recipient organization
 	@GetMapping("/request-history")
