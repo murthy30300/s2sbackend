@@ -25,6 +25,7 @@ import com.klu.ss.model.*;
 public class PostController {
 	@Autowired
 	private PostService psp;
+	
 
 	@PostMapping("/create")
 	public ResponseEntity<?> createPost(@RequestParam("caption") String caption,
