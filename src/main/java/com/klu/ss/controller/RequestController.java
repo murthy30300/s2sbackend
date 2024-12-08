@@ -20,7 +20,7 @@ import java.util.*;
 
 @RestController
 @RequestMapping("/requests")
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = "https://slacksurplus.netlify.app")
 public class RequestController {
 	@Autowired
 	private RequestService requestService;
