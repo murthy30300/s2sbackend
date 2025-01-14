@@ -14,7 +14,7 @@ import com.klu.ss.model.Profile;
 import com.klu.ss.service.*;
 
 @RestController
-@CrossOrigin(origins = "https://slacksurplus.netlify.app")
+@CrossOrigin(origins = "http://localhost:5173")
 @RequestMapping("/profile")
 public class ProfileController {
 	@Autowired

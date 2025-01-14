@@ -19,7 +19,7 @@ import com.klu.ss.model.User;
 import com.klu.ss.service.UserService;
 
 
-@CrossOrigin(origins = "https://slacksurplus.netlify.app", allowedHeaders = "*", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE, RequestMethod.OPTIONS})@Controller
+@CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE, RequestMethod.OPTIONS})@Controller
 public class ViewController {
 	@Autowired
 	UserService usr;

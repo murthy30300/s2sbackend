@@ -20,7 +20,7 @@ import com.klu.ss.service.*;
 import com.klu.ss.model.*;
 
 @RestController
-@CrossOrigin(origins = "https://slacksurplus.netlify.app")
+@CrossOrigin(origins = "http://localhost:5173")
 @RequestMapping("/posts")
 public class PostController {
 	@Autowired
