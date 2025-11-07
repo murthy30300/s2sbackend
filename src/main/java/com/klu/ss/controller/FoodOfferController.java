@@ -22,7 +22,7 @@ import com.klu.ss.service.FoodOfferService;
 import com.klu.ss.service.UserService;
 @RestController
 @RequestMapping("/foodOffers")
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = "*")
 public class FoodOfferController {
 
     private final FoodOfferService foodOfferService;

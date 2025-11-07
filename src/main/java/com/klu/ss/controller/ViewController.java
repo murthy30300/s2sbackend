@@ -19,7 +19,7 @@ import com.klu.ss.model.User;
 import com.klu.ss.service.UserService;
 
 
-@CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE, RequestMethod.OPTIONS})@Controller
+@CrossOrigin(origins = "*", allowedHeaders = "*", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE, RequestMethod.OPTIONS})@Controller
 public class ViewController {
 	@Autowired
 	UserService usr;
@@ -57,6 +57,4 @@ public class ViewController {
 	            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error retrieving userId");
 	        }
 	    }
-	
-
 }
