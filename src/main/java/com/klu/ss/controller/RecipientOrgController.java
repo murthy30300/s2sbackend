@@ -32,7 +32,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "https://master.d30w6cve5rbig5.amplifyapp.com/")
 @RestController
 @RequestMapping("/api/recipient")
 public class RecipientOrgController {

@@ -20,7 +20,7 @@ import com.klu.ss.service.*;
 import com.klu.ss.model.*;
 
 @RestController
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "https://master.d30w6cve5rbig5.amplifyapp.com/")
 @RequestMapping("/posts")
 public class PostController {
 	@Autowired

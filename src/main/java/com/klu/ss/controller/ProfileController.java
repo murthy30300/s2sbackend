@@ -14,7 +14,7 @@ import com.klu.ss.model.Profile;
 import com.klu.ss.service.*;
 
 @RestController
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "https://master.d30w6cve5rbig5.amplifyapp.com/")
 @RequestMapping("/profile")
 public class ProfileController {
 	@Autowired

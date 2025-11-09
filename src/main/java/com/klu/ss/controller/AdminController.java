@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "https://master.d30w6cve5rbig5.amplifyapp.com/")
 @RestController
 @RequestMapping("/admin")
 public class AdminController {

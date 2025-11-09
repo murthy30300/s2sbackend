@@ -22,7 +22,7 @@ import com.klu.ss.service.FoodOfferService;
 import com.klu.ss.service.UserService;
 @RestController
 @RequestMapping("/foodOffers")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "https://master.d30w6cve5rbig5.amplifyapp.com/")
 public class FoodOfferController {
 
     private final FoodOfferService foodOfferService;
