@@ -19,7 +19,8 @@ import com.klu.ss.model.User;
 import com.klu.ss.service.UserService;
 
 
-@CrossOrigin(origins = "https://master.d30w6cve5rbig5.amplifyapp.com/", allowedHeaders = "*", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE, RequestMethod.OPTIONS})@Controller
+@CrossOrigin(origins = "http://s2s-frontend-1702.s3-website-us-east-1.amazonaws.com/")
+@Controller
 public class ViewController {
 	@Autowired
 	UserService usr;
