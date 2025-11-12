@@ -20,7 +20,7 @@ import java.util.*;
 
 @RestController
 @RequestMapping("/requests")
-@CrossOrigin(origins = "https://master.d30w6cve5rbig5.amplifyapp.com/")
+@CrossOrigin(origins = "http://s2s-frontend-1702.s3-website-us-east-1.amazonaws.com/")
 public class RequestController {
 	@Autowired
 	private RequestService requestService;
