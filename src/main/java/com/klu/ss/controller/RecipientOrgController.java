@@ -32,7 +32,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
-@CrossOrigin(origins = "https://master.d30w6cve5rbig5.amplifyapp.com/")
+@CrossOrigin(origins = "http://s2s-frontend-1702.s3-website-us-east-1.amazonaws.com/")
 @RestController
 @RequestMapping("/api/recipient")
 public class RecipientOrgController {
