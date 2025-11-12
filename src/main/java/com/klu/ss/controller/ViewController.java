@@ -19,8 +19,7 @@ import com.klu.ss.model.User;
 import com.klu.ss.service.UserService;
 
 
-@CrossOrigin(origins = "http://s2s-frontend-1702.s3-website-us-east-1.amazonaws.com/")
-@Controller
+@CrossOrigin(origins = "http://s2s-frontend-1702.s3-website-us-east-1.amazonaws.com/", allowedHeaders = "*", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE, RequestMethod.OPTIONS})@Controller
 public class ViewController {
 	@Autowired
 	UserService usr;
